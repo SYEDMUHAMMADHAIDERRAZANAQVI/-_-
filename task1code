@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login Authentication</title>
+    <style>
+        body {
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            flex-direction: column;
+            background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('background.jpg'); /* Add your image file path here */
+            background-size: cover;
+            background-position: center;
+            color: #fff;
+            font-family: Arial, sans-serif;
+        }
+
+        h1, h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        form {
+            margin: 10px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        }
+
+        label {
+            display: block;
+            color: #fff;
+            margin: 10px 0;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border: none;
+            border-radius: 5px;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background: #3498db;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #2980b9;
+        }
+
+        #message {
+            color: #f00;
+            margin: 10px 0;
+            font-size: 18px; /* Increase font size for a clearer message */
+            animation: pop 0.5s ease-in-out;
+        }
+
+        @keyframes pop {
+            0% {
+                transform: scale(0.7);
+                opacity: 0;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Welcome to Our Login Authentication System</h1>
+
+    <!-- Registration Form -->
+    <h2>Register</h2>
+    <form id="registerForm">
+        <label for="registerUsername">Username:</label>
+        <input type="text" id="registerUsername" required><br>
+
+        <label for="registerPassword">Password:</label>
+        <input type="password" id="registerPassword" required><br>
+
+        <button type="submit">Register</button>
+    </form>
+
+    <!-- Login Form -->
+    <h2>Login</h2>
+    <form id="loginForm">
+        <label for="loginUsername">Username:</label>
+        <input type="text" id="loginUsername" required><br>
+
+        <label for="loginPassword">Password:</label>
+        <input type="password" id="loginPassword" required><br>
+
+        <button type="submit">Login</button>
+    </form>
+
+    <div id="message"></div>
+
+    <script>
+        const registeredUsers = [];
+
+        document.getElementById("registerForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+            const registerUsername = document.getElementById("registerUsername").value;
+            const registerPassword = document.getElementById("registerPassword").value;
+            registeredUsers.push({ username: registerUsername, password: registerPassword });
+            document.getElementById("registerUsername").value = "";
+            document.getElementById("registerPassword").value = "";
+            showMessage("Registration successful. You can now log in.");
+        });
+
+        document.getElementById("loginForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+            const loginUsername = document.getElementById("loginUsername").value;
+            const loginPassword = document.getElementById("loginPassword").value;
+            const user = registeredUsers.find(u => u.username === loginUsername);
+            if (user && user.password === loginPassword) {
+                showMessage(`Welcome, ${loginUsername}! You are now logged in.`);
+            } else {
+                showMessage("Invalid username or password. Please try again.");
+            }
+            document.getElementById("loginUsername").value = "";
+            document.getElementById("loginPassword").value = "";
+        });
+
+        function showMessage(message) {
+            const messageElement = document.getElementById("message");
+            messageElement.textContent = message;
+            messageElement.style.animation = "none"; // Reset the animation
+            messageElement.offsetHeight; // Trigger reflow
+            messageElement.style.animation = "pop 0.5s ease-in-out"; // Apply the animation
+        }
+    </script>
+</body>
+</html>
